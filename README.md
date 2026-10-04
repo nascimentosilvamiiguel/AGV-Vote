@@ -14,16 +14,13 @@
 
 ## ⚠️ CAUTION
 
-> Este é um projeto completamente livre de quaisquer barreiras institucionais
+> Este é um projeto completamente livre de quaisquer barreiras institucionais.
 
 ---
 
 ## 👥 Credits
 
-Individual project developed for entry-level to intermediate Obsidian users.
-
-<img src="./.github\logos\logo-agv.png
-" width="170px" />
+Projeto criado por alunos para alunos.
 
 ---
 
