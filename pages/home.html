@@ -1,87 +1,109 @@
 <!doctype html>
 <html lang="pt-br">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Portal do Grêmio Estudantil AGV</title>
-    <meta
-      name="description"
-      content="O Portal do grêmio estudantil AGV foi feito para ajudar estudantes a melhorar nossa escola ALBERTO GOMES VEIGA"
-    />
-    <link rel="stylesheet" href="/styles/home.css" />
-    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
-    <script src="/pocketbase/login.js"></script>
-    <script src="/pocketbase/root.js"></script>
-  </head>
-  <body onload="checkAuth()">
-    <!-- Barra de navegação -->
-    <!-- Barra de navegação -->
-<nav class="navbar">
-  <div class="nav-left">
-    <a href="./home.html">HOME</a>
-    <a href="#sobre">SOBRE</a>
-  </div>
-  <div class="nav-center">
-    <span>GRÊMIO ESTUDANTIL</span>
-    <small>barra de navegação</small>
-  </div>
-  <div class="nav-right">
-    <a href="#">NOTICIAS</a>
-    <a href="#">SUPORTE</a>
-    <!-- Elementos dinâmicos do usuário inseridos aqui -->
-    <span id="user-display" style="margin-left: 15px; color: #fff; font-size: 14px;"></span>
-    <button id="logout-btn" onclick="logout()" style="display:none; margin-left: 10px; background: #ff4d4d; color: white; border: none; padding: 5px 10px; cursor: pointer; border-radius: 4px;">Sair</button>
-  </div>
-</nav>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Portal do Grêmio Estudantil AGV</title>
+        <meta
+            name="description"
+            content="O Portal do grêmio estudantil AGV foi feito para ajudar estudantes a melhorar nossa escola ALBERTO GOMES VEIGA"
+        />
+        <link rel="stylesheet" href="/styles/home.css" />
+        <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
+        <script src="/pocketbase/login.js"></script>
+        <script src="/pocketbase/root.js"></script>
+    </head>
+    <body onload="checkAuth()">
+        <!-- Barra de navegação -->
+        <!-- Barra de navegação -->
+        <nav class="navbar">
+            <div class="nav-left">
+                <a href="./home.html">HOME</a>
+                <a href="#sobre">SOBRE</a>
+            </div>
+            <div class="nav-center">
+                <span>GRÊMIO ESTUDANTIL</span>
+                <small>barra de navegação</small>
+            </div>
+            <div class="nav-right">
+                <a href="#">NOTICIAS</a>
+                <a href="#">SUPORTE</a>
+                <!-- Elementos dinâmicos do usuário inseridos aqui -->
+                <span
+                    id="user-display"
+                    style="margin-left: 15px; color: #fff; font-size: 14px"
+                ></span>
+                <button
+                    id="logout-btn"
+                    onclick="logout()"
+                    style="
+                        display: none;
+                        margin-left: 10px;
+                        background: #ff4d4d;
+                        color: white;
+                        border: none;
+                        padding: 5px 10px;
+                        cursor: pointer;
+                        border-radius: 4px;
+                    "
+                >
+                    Sair
+                </button>
+            </div>
+        </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="hero-content">
-        <p>colocar imagem de fundo<br />em alta resolução</p>
-        <div class="hero-buttons">
-          <a href="./chapas.html" class="btn btn-light">CHAPAS</a>
-          <a href="./votacao.html" class="btn btn-dark">VOTAR</a>
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="hero-content">
+                <p>colocar imagem de fundo<br />em alta resolução</p>
+                <div class="hero-buttons">
+                    <a href="./chapas.html" class="btn btn-light">CHAPAS</a>
+                    <a href="./votacao.html" class="btn btn-dark">VOTAR</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sobre Section -->
+        <section id="sobre" class="sobre">
+            <h2>SOBRE</h2>
+            <div class="sobre-content">
+                <!-- Conteúdo sobre o grêmio -->
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer>
+            <p>
+                R. Júlia da Costa, 780 - Campo Grande, Paranaguá - PR, 83203-060
+            </p>
+            <div class="footer-contacts">
+                <span>(41) 3423-3819</span>
+                <span>pngalbertogomes@seed.pr.gov.br</span>
+            </div>
+            <p class="copyright">
+                © 2026 Rafael N. Silva. Todos os direitos reservados.
+            </p>
+        </footer>
+
+        <!-- Área logada -->
+        <div class="login-area" style="display: none">
+            <h1>Área logada</h1>
+            <p id="user"></p>
+            <button onclick="logout()">Sair</button>
         </div>
-      </div>
-    </section>
 
-    <!-- Sobre Section -->
-    <section id="sobre" class="sobre">
-      <h2>SOBRE</h2>
-      <div class="sobre-content">
-        <!-- Conteúdo sobre o grêmio -->
-      </div>
-    </section>
+        <script>
+            // Pega o modelo do usuário logado no PocketBase
+            const user = pb.authStore.model;
 
-    <!-- Footer -->
-    <footer>
-      <p>R. Júlia da Costa, 780 - Campo Grande, Paranaguá - PR, 83203-060</p>
-      <div class="footer-contacts">
-        <span>(41) 3423-3819</span>
-        <span>pngalbertogomes@seed.pr.gov.br</span>
-      </div>
-      <p class="copyright">
-        © 2026 Rafael N. Silva. Todos os direitos reservados.
-      </p>
-    </footer>
-
-    <!-- Área logada -->
-    <div class="login-area" style="display: none">
-      <h1>Área logada</h1>
-      <p id="user"></p>
-      <button onclick="logout()">Sair</button>
-    </div>
-
-    <script>
-      // Pega o modelo do usuário logado no PocketBase
-      const user = pb.authStore.model;
-
-      if (user) {
-        // Exibe o e-mail do usuário na navbar
-        document.getElementById("user-display").textContent = user.email;
-        // Torna o botão de logout visível
-        document.getElementById("logout-btn").style.display = "inline-block";
-      }
-    </script>
-  </body>
+            if (user) {
+                // Exibe o e-mail do usuário na navbar
+                document.getElementById("user-display").textContent =
+                    user.email;
+                // Torna o botão de logout visível
+                document.getElementById("logout-btn").style.display =
+                    "inline-block";
+            }
+        </script>
+    </body>
 </html>
