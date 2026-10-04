@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="./.github/logos/logo-gm2.png" width="250px" />
+  <img src="./.github/logos/agv.png" width="250px" />
 <br>
 <img src="./.github/pallets/pallet.png" width="400px" />
 <br>AGV-Vote<br>
@@ -12,8 +12,8 @@
 </a>
 </h1>
 
-
 ## ⚠️ CAUTION
+
 > Este é um projeto completamente livre de quaisquer barreiras institucionais
 
 ---
