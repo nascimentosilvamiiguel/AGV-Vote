@@ -1,6 +1,26 @@
-// pocketbase/config.js
 
-const POCKETBASE_URL = "http://192.168.0.3:8020";
 
-// Remova o "const" e coloque "window." antes de pb
+const POCKETBASE_URL = "http://10.220.27.162:8020";
+
 window.pb = new PocketBase(POCKETBASE_URL);
+
+window.SITE = {
+   
+  eleicaoId: "gremio_2026",
+
+   
+  votoBranco: true,
+
+   
+   
+   
+  resultadoParcial: false,
+
+   
+   
+  instagram: { usuario: "", url: "" },
+
+   
+  dominioEmail: "@escola.pr.gov.br",
+  senhaMinima: 6,
+};

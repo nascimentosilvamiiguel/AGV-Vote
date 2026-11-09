@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Notícias e comunicados — Grêmio Estudantil</title>
+    <meta name="theme-color" content="#000435" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@400;600&family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body data-page="noticias">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header id="site-header"></header>
+
+    <main id="conteudo" class="light-page">
+      <div class="page-title">
+        <h1>Notícias e comunicados</h1>
+        <p>Fique por dentro do que acontece no Grêmio</p>
+      </div>
+      <div class="container">
+        <div class="toolbar">
+          <label class="sr-only" for="busca">Buscar notícias</label>
+          <input
+            id="busca"
+            type="search"
+            placeholder="Buscar por título ou texto"
+            autocomplete="off"
+          />
+        </div>
+        <div class="news-grid" id="lista" aria-live="polite"></div>
+
+        <section class="social" aria-labelledby="titulo-social">
+          <h2 id="titulo-social">Acompanhe nas redes</h2>
+          <div class="social-card">
+            <div class="social-profile">
+              <span class="social-avatar">
+                <img src="../assets/logo.png" alt="" width="46" height="27" />
+              </span>
+              <div class="social-info">
+                <strong id="social-user"></strong>
+                <span>Grêmio Estudantil · Colégio Estadual Alberto Gomes Veiga</span>
+              </div>
+            </div>
+
+            <div class="social-actions">
+              <a class="btn" id="social-link" href="#">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                  <rect x="3" y="6" width="18" height="14" rx="3.5" />
+                  <circle cx="12" cy="13" r="3.6" />
+                  <path d="M8.5 6l1.2-2h4.6l1.2 2" />
+                </svg>
+                Seguir no Instagram
+              </a>
+              <p class="social-note">O perfil ainda não foi criado.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <dialog class="modal" id="dlg" aria-labelledby="dlg-titulo">
+      <div class="modal-body">
+        <h2 id="dlg-titulo"></h2>
+        <p class="modal-hint" id="dlg-data"></p>
+        <p class="modal-text modal-left" id="dlg-texto"></p>
+        <div class="modal-actions">
+          <button class="btn btn-small" type="button" data-close>Fechar</button>
+        </div>
+      </div>
+    </dialog>
+
+    <dialog class="modal modal-sm" id="dlg-insta" aria-labelledby="insta-titulo">
+      <div class="modal-body">
+        <h2 id="insta-titulo">Perfil em breve</h2>
+        <p class="modal-text">
+          O Instagram do Grêmio ainda não foi criado. Quando existir, este botão vai levar direto ao
+          perfil.
+        </p>
+        <div class="modal-actions">
+          <button class="btn btn-small" type="button" data-close>Entendi</button>
+        </div>
+      </div>
+    </dialog>
+
+    <footer id="site-footer"></footer>
+    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js" defer></script>
+    <script src="../pocketbase/root.js" defer></script>
+    <script src="../pocketbase/api.js" defer></script>
+    <script src="../scripts/app.js" defer></script>
+    <script src="../scripts/layout.js" defer></script>
+    <script src="../pocketbase/noticias.js" defer></script>
+  </body>
+</html>

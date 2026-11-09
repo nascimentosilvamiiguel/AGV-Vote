@@ -1,109 +1,300 @@
 <!doctype html>
-<html lang="pt-br">
-    <head>
-        <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Portal do Grêmio Estudantil AGV</title>
-        <meta
-            name="description"
-            content="O Portal do grêmio estudantil AGV foi feito para ajudar estudantes a melhorar nossa escola ALBERTO GOMES VEIGA"
-        />
-        <link rel="stylesheet" href="/styles/home.css" />
-        <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
-        <script src="/pocketbase/login.js"></script>
-        <script src="/pocketbase/root.js"></script>
-    </head>
-    <body onload="checkAuth()">
-        <!-- Barra de navegação -->
-        <!-- Barra de navegação -->
-        <nav class="navbar">
-            <div class="nav-left">
-                <a href="./home.html">HOME</a>
-                <a href="#sobre">SOBRE</a>
-            </div>
-            <div class="nav-center">
-                <span>GRÊMIO ESTUDANTIL</span>
-                <small>barra de navegação</small>
-            </div>
-            <div class="nav-right">
-                <a href="#">NOTICIAS</a>
-                <a href="#">SUPORTE</a>
-                <!-- Elementos dinâmicos do usuário inseridos aqui -->
-                <span
-                    id="user-display"
-                    style="margin-left: 15px; color: #fff; font-size: 14px"
-                ></span>
-                <button
-                    id="logout-btn"
-                    onclick="logout()"
-                    style="
-                        display: none;
-                        margin-left: 10px;
-                        background: #ff4d4d;
-                        color: white;
-                        border: none;
-                        padding: 5px 10px;
-                        cursor: pointer;
-                        border-radius: 4px;
-                    "
-                >
-                    Sair
-                </button>
-            </div>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Grêmio Estudantil — Colégio Estadual Alberto Gomes Veiga</title>
+    <meta
+      name="description"
+      content="Site oficial do Grêmio Estudantil do Colégio Estadual Alberto Gomes Veiga, Paranaguá (PR): chapas, votação, notícias e suporte."
+    />
+    <meta name="theme-color" content="#000435" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@400;600&family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body data-page="home">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header id="site-header"></header>
+
+    <main id="conteudo">
+      <section class="hero" aria-labelledby="titulo-hero">
+        <h1 id="titulo-hero" class="sr-only">
+          Grêmio Estudantil do Colégio Estadual Alberto Gomes Veiga
+        </h1>
+        <div class="hero-actions">
+          <a class="btn btn-light" href="chapas.html">Chapas</a>
+          <a class="btn btn-ghost" href="votacao.html">Votar</a>
+        </div>
+      </section>
+
+      <section class="section" id="sobre" aria-labelledby="titulo-sobre">
+        <h2 id="titulo-sobre">Sobre</h2>
+        <p>
+          O Colégio Estadual Alberto Gomes Veiga, localizado em Paranaguá, Paraná, é uma instituição
+          pública de ensino que oferece Ensino Médio. A escola tem como objetivo proporcionar
+          formação acadêmica e cidadã aos estudantes, preparando-os para a continuidade dos estudos,
+          o mundo do trabalho e a participação na sociedade.
+        </p>
+        <p>
+          A instituição valoriza o desenvolvimento de conhecimentos, habilidades e competências,
+          buscando oferecer aos alunos uma educação que combine formação geral, convivência social e
+          preparação para seus projetos de vida.
+        </p>
+
+        <nav class="sobre-nav" aria-label="Neste tópico">
+          <a href="#gremio-oque">O que é</a>
+          <a href="#gremio-como">Como funciona</a>
+          <a href="#gremio-finalidades">Finalidades</a>
+          <a href="#gremio-votar">Por que votar</a>
+          <a href="#gremio-vantagens">Vantagens</a>
+          <a href="#gremio-consequencias">Consequências</a>
         </nav>
 
-        <!-- Hero Section -->
-        <section class="hero">
-            <div class="hero-content">
-                <p>colocar imagem de fundo<br />em alta resolução</p>
-                <div class="hero-buttons">
-                    <a href="./chapas.html" class="btn btn-light">CHAPAS</a>
-                    <a href="./votacao.html" class="btn btn-dark">VOTAR</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Sobre Section -->
-        <section id="sobre" class="sobre">
-            <h2>SOBRE</h2>
-            <div class="sobre-content">
-                <!-- Conteúdo sobre o grêmio -->
-            </div>
-        </section>
-
-        <!-- Footer -->
-        <footer>
-            <p>
-                R. Júlia da Costa, 780 - Campo Grande, Paranaguá - PR, 83203-060
-            </p>
-            <div class="footer-contacts">
-                <span>(41) 3423-3819</span>
-                <span>pngalbertogomes@seed.pr.gov.br</span>
-            </div>
-            <p class="copyright">
-                © 2026 Rafael N. Silva. Todos os direitos reservados.
-            </p>
-        </footer>
-
-        <!-- Área logada -->
-        <div class="login-area" style="display: none">
-            <h1>Área logada</h1>
-            <p id="user"></p>
-            <button onclick="logout()">Sair</button>
+        <div class="sobre-bloco reveal" id="gremio-oque">
+          <h3>O que é o Grêmio Estudantil</h3>
+          <p>
+            O Grêmio Estudantil é a entidade que representa os estudantes da escola. Ele é formado e
+            dirigido pelos próprios alunos e serve como a voz coletiva da turma diante da direção,
+            dos professores e da comunidade escolar.
+          </p>
+          <p>
+            No Brasil, a Lei nº 7.398/1985 garante aos estudantes o direito de organizar grêmios
+            como entidades autônomas, que representam os interesses dos alunos. Autônomo significa
+            que o Grêmio não é um setor da escola nem depende da direção para existir ou decidir
+            suas ações. A lei não obriga a ter um: ele existe porque os estudantes se organizam.
+          </p>
+          <p class="destaque">
+            Em uma frase: o Grêmio é o jeito organizado de os estudantes serem ouvidos e
+            participarem das decisões que afetam a vida escolar.
+          </p>
         </div>
 
-        <script>
-            // Pega o modelo do usuário logado no PocketBase
-            const user = pb.authStore.model;
+        <div class="sobre-bloco reveal" id="gremio-como">
+          <h3>Como funciona</h3>
+          <p>Cada Grêmio segue o seu estatuto, mas o caminho costuma ser este:</p>
+          <ol class="passos">
+            <li>
+              <h4>Estatuto</h4>
+              <p>
+                Os estudantes aprovam em assembleia as regras do Grêmio: quem pode participar, como
+                é a eleição, quanto dura o mandato e quais são as funções.
+              </p>
+            </li>
+            <li>
+              <h4>Chapas</h4>
+              <p>
+                Grupos de estudantes se candidatam em chapas, apresentando suas propostas e seus
+                integrantes. Aqui no site, você conhece todas na página
+                <a href="chapas.html">Chapas</a>.
+              </p>
+            </li>
+            <li>
+              <h4>Votação</h4>
+              <p>
+                Os estudantes votam na chapa que mais combina com eles. A chapa escolhida, segundo
+                as regras do estatuto e do edital, assume a gestão.
+              </p>
+            </li>
+            <li>
+              <h4>Diretoria</h4>
+              <p>
+                A chapa eleita forma a diretoria e divide as funções, como presidência, secretaria,
+                tesouraria, comunicação, cultura e esportes.
+              </p>
+            </li>
+            <li>
+              <h4>Ação e prestação de contas</h4>
+              <p>
+                A diretoria ouve os estudantes, organiza projetos e eventos, leva as demandas à
+                direção e mostra o que foi feito e decidido.
+              </p>
+            </li>
+            <li>
+              <h4>Renovação</h4>
+              <p>
+                O mandato tem prazo definido, em geral de um ano. Ao final, uma nova eleição renova
+                a representação.
+              </p>
+            </li>
+          </ol>
+          <p class="nota">
+            Prazos, requisitos e forma de apuração dependem do estatuto e do edital de cada eleição.
+            Confirme os do colégio com a comissão eleitoral.
+          </p>
+        </div>
 
-            if (user) {
-                // Exibe o e-mail do usuário na navbar
-                document.getElementById("user-display").textContent =
-                    user.email;
-                // Torna o botão de logout visível
-                document.getElementById("logout-btn").style.display =
-                    "inline-block";
-            }
-        </script>
-    </body>
+        <div class="sobre-bloco reveal" id="gremio-finalidades">
+          <h3>Finalidades</h3>
+          <p>A lei define cinco finalidades para o Grêmio:</p>
+          <ul class="finalidades">
+            <li>
+              <h4>Educacionais</h4>
+              <p>
+                Apoiar o aprendizado, com grupos de estudo, monitorias e debates sobre a qualidade
+                do ensino.
+              </p>
+            </li>
+            <li>
+              <h4>Culturais</h4>
+              <p>
+                Promover arte, música, teatro, feiras e saraus feitos pelos próprios estudantes.
+              </p>
+            </li>
+            <li>
+              <h4>Cívicas</h4>
+              <p>
+                Estimular a cidadania, o debate e a participação democrática dentro e fora da
+                escola.
+              </p>
+            </li>
+            <li>
+              <h4>Esportivas</h4>
+              <p>Organizar campeonatos, gincanas e atividades que incentivem esporte e saúde.</p>
+            </li>
+            <li>
+              <h4>Sociais</h4>
+              <p>Fortalecer a convivência e promover ações solidárias com a comunidade.</p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sobre-bloco reveal" id="gremio-votar">
+          <h3>Por que o estudante deve votar</h3>
+          <p>
+            A chapa eleita fala em nome de todos os estudantes. Quem não vota deixa essa escolha
+            para os outros.
+          </p>
+          <ul class="lista-check">
+            <li>
+              <strong>Sua voz vira representação.</strong> A diretoria leva às reuniões o que os
+              estudantes pediram.
+            </li>
+            <li>
+              <strong>Você escolhe propostas do seu dia a dia,</strong> de eventos a melhorias no
+              espaço de convivência.
+            </li>
+            <li>
+              <strong>Mais votos dão mais legitimidade.</strong> Uma diretoria eleita por muitos tem
+              mais força para negociar com a direção.
+            </li>
+            <li>
+              <strong>É prática de cidadania:</strong> comparar propostas, decidir e acompanhar quem
+              foi eleito.
+            </li>
+          </ul>
+        </div>
+
+        <div class="sobre-bloco reveal" id="gremio-vantagens">
+          <h3>Vantagens</h3>
+          <p>Para os estudantes e para a escola:</p>
+          <ul class="vantagens">
+            <li>
+              <h4>Um canal organizado</h4>
+              <p>
+                Pedidos e sugestões chegam à direção de forma coletiva, em vez de reclamações
+                soltas.
+              </p>
+            </li>
+            <li>
+              <h4>Mais atividades</h4>
+              <p>Eventos, campeonatos e projetos que só acontecem quando os alunos se mobilizam.</p>
+            </li>
+            <li>
+              <h4>Protagonismo e aprendizado</h4>
+              <p>Quem participa treina liderança, organização, trabalho em equipe e oratória.</p>
+            </li>
+            <li>
+              <h4>Convivência melhor</h4>
+              <p>
+                Atividades entre turmas aproximam os estudantes e fortalecem o sentimento de
+                pertencer à escola.
+              </p>
+            </li>
+            <li>
+              <h4>Diálogo com a direção</h4>
+              <p>Conversa regular entre alunos e gestão ajuda a resolver problemas cedo.</p>
+            </li>
+            <li>
+              <h4>Experiência de democracia</h4>
+              <p>
+                Eleição, debate e prestação de contas ensinam na prática como funcionam as
+                instituições democráticas.
+              </p>
+            </li>
+          </ul>
+        </div>
+
+        <div class="sobre-bloco reveal" id="gremio-consequencias">
+          <h3>Consequências</h3>
+          <p>Votar, ou não votar, tem efeitos reais:</p>
+          <div class="compare">
+            <div class="compare-col compare-sim">
+              <h4>Quando você vota</h4>
+              <ul>
+                <li>A diretoria nasce com o respaldo da maioria e fala por mais gente.</li>
+                <li>As propostas vencedoras refletem o que os estudantes querem de fato.</li>
+                <li>Você ganha o direito de cobrar: pode acompanhar as ações e pedir contas.</li>
+              </ul>
+            </div>
+            <div class="compare-col compare-nao">
+              <h4>Quando você não vota</h4>
+              <ul>
+                <li>
+                  Uma minoria escolhe por todos, e a diretoria pode não representar a maioria.
+                </li>
+                <li>Com poucos votos, a diretoria perde força perante a direção da escola.</li>
+                <li>
+                  Propostas importantes para você podem ficar de fora, e fica mais difícil reclamar
+                  do resultado depois.
+                </li>
+              </ul>
+            </div>
+          </div>
+          <p class="nota">
+            Votar em branco mostra que você participou, mas não escolhe nenhuma chapa. Como o voto
+            em branco é contado depende das regras da eleição.
+          </p>
+          <p class="nota">
+            <strong>Os limites do Grêmio:</strong> ele representa, propõe e organiza, mas não
+            substitui a direção. Decisões pedagógicas e administrativas, como notas, calendário e
+            contratação, continuam com a escola e com a rede estadual de ensino. O Grêmio é um canal
+            de diálogo e não promete resolver tudo.
+          </p>
+        </div>
+
+        <div class="sobre-cta reveal">
+          <a class="btn btn-light" href="chapas.html">Conhecer as chapas</a>
+          <a class="btn btn-ghost" href="votacao.html">Votar</a>
+        </div>
+
+        <p class="fonte">
+          Base legal:
+          <a
+            href="https://www.planalto.gov.br/ccivil_03/leis/l7398.htm"
+            target="_blank"
+            rel="noopener noreferrer"
+            >Lei nº 7.398, de 4 de novembro de 1985</a
+          >. Conteúdo informativo geral: regras específicas (mandato, requisitos, apuração) seguem o
+          estatuto do Grêmio e o edital da eleição do colégio.
+        </p>
+      </section>
+    </main>
+
+    <footer id="site-footer"></footer>
+    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js" defer></script>
+    <script src="../pocketbase/root.js" defer></script>
+    <script src="../pocketbase/api.js" defer></script>
+    <script src="../scripts/app.js" defer></script>
+    <script src="../scripts/layout.js" defer></script>
+  </body>
 </html>

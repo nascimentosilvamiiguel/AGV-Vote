@@ -1,0 +1,23 @@
+[
+  {
+    "titulo": "Votação do Grêmio",
+    "resumo": "Entenda como será a escolha da nova chapa.",
+    "corpo": "Aqui apareceria o comunicado completo com datas, local e regras da votação.",
+    "data": "2026-11-02",
+    "publicado": true
+  },
+  {
+    "titulo": "Gincana de integração",
+    "resumo": "Turmas competem em provas culturais e esportivas.",
+    "corpo": "Aqui apareceria a programação da gincana, com horários e equipes.",
+    "data": "2026-10-28",
+    "publicado": true
+  },
+  {
+    "titulo": "Reunião aberta com estudantes",
+    "resumo": "Espaço para sugestões e propostas.",
+    "corpo": "Aqui apareceria a pauta da reunião e como participar.",
+    "data": "2026-10-15",
+    "publicado": true
+  }
+]

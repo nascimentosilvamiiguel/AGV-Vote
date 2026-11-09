@@ -1,74 +1,89 @@
 <!doctype html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Login - AGV Vote</title>
-  <link rel="stylesheet" href="/styles/login.css" />
-  <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
-  <script src="/pocketbase/login.js"></script>
-  <script src="/pocketbase/root.js"></script>
-</head>
-<body>
-  <div class="login-card">
-    <div class="top">
-      <h1>Login</h1>
-    </div>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Entrar — Grêmio Estudantil</title>
+    <meta name="theme-color" content="#000435" />
+    <meta name="robots" content="noindex" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@400;600&family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body class="login-page" data-page="login">
+    <main id="conteudo" class="login-main">
+      <div class="login-box">
+        <a href="home.html" aria-label="Voltar à página inicial">
+          <img
+            class="logo"
+            src="../assets/logo.png"
+            alt="Grêmio Estudantil"
+            width="278"
+            height="161"
+          />
+        </a>
 
-    <form id="authForm" onsubmit="loginOrRegister(event)">
-      <div class="input-group">
-        <input class="login" id="email" type="email" name="email" placeholder="Volume de email" required />
-        <input class="register" id="password" type="password" name="senha" placeholder="Volume de senha" required />
+        <form id="form" novalidate>
+          <h1 class="sr-only" id="titulo">Entrar</h1>
 
-        <div class="input-login-group">
-          <button id="submitBtn" type="submit">Botão de login</button>
-        </div>
+          <label class="sr-only" for="email">E-mail</label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            autocomplete="email"
+            placeholder="E-mail"
+            required
+          />
 
-        <div class="forgot-password">
-          <a href="#" id="forgotPasswordLink">Esqueci minha senha</a>
-        </div>
+          <div id="campo-senha">
+            <label class="sr-only" for="senha">Senha</label>
+            <input
+              id="senha"
+              name="senha"
+              type="password"
+              autocomplete="current-password"
+              placeholder="Senha"
+              required
+            />
+          </div>
+
+          <div id="campo-senha2" hidden>
+            <label class="sr-only" for="senha2">Confirmar senha</label>
+            <input
+              id="senha2"
+              name="senha2"
+              type="password"
+              autocomplete="new-password"
+              placeholder="Confirmar senha"
+            />
+          </div>
+
+          <button class="btn-login" id="enviar" type="submit">Login</button>
+
+          <div class="login-links">
+            <button type="button" id="alt-modo">Primeiro acesso</button>
+            <button type="button" id="esqueci">Esqueceu a senha?</button>
+          </div>
+
+          <div id="msg" aria-live="polite"></div>
+          <p class="login-demo">Use seu e-mail institucional (<span id="dominio"></span>).</p>
+        </form>
       </div>
-    </form>
-
-    <!-- Modal para reset de senha -->
-    <div id="resetModal" class="modal" style="display: none;">
-      <div class="modal-content">
-        <span class="close-btn" id="closeModal">&times;</span>
-        <h3>Recuperar Senha</h3>
-        <p>Digite seu email institucional para receber o link de redefinição:</p>
-        <input id="resetEmail" type="email" placeholder="seu@escola.pr.gov.br" />
-        <button id="sendResetBtn">Enviar Link</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById("submitBtn").addEventListener("click", async function (e) {
-      e.preventDefault();
-      await loginOrRegister(e);
-    });
-
-    const forgotLink = document.getElementById("forgotPasswordLink");
-    const resetModal = document.getElementById("resetModal");
-    const closeModal = document.getElementById("closeModal");
-    const sendResetBtn = document.getElementById("sendResetBtn");
-
-    forgotLink.addEventListener("click", function (e) {
-      e.preventDefault();
-      resetModal.style.display = "flex";
-    });
-
-    closeModal.addEventListener("click", function () {
-      resetModal.style.display = "none";
-    });
-
-    resetModal.addEventListener("click", function (e) {
-      if (e.target === resetModal) resetModal.style.display = "none";
-    });
-
-    sendResetBtn.addEventListener("click", async function () {
-      await requestPasswordReset();
-    });
-  </script>
-</body>
+    </main>
+    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js" defer></script>
+    <script src="../pocketbase/root.js" defer></script>
+    <script src="../pocketbase/api.js" defer></script>
+    <script src="../scripts/app.js" defer></script>
+    <script src="../pocketbase/login.js" defer></script>
+  </body>
 </html>

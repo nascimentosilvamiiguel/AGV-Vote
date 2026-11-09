@@ -1,0 +1,210 @@
+[
+  {
+    "name": "Chapa Voz Ativa",
+    "slogan": "Unidos pelo futuro",
+    "sobre": "Somos um grupo de estudantes de turmas diferentes que acredita que todo mundo tem algo a dizer. Queremos um Grêmio que escute primeiro e decida junto.",
+    "proposals": [
+      {
+        "titulo": "Assembleia aberta todo bimestre",
+        "texto": "Reunião com todas as turmas para votar prioridades e prestar contas."
+      },
+      {
+        "titulo": "Mostra cultural anual",
+        "texto": "Música, teatro e arte feitos pelos próprios estudantes no pátio da escola."
+      },
+      {
+        "titulo": "Caixa de ideias digital",
+        "texto": "Qualquer aluno envia sugestões e acompanha o que foi respondido."
+      }
+    ],
+    "integrantes": [
+      {
+        "nome": "Helena Duarte",
+        "cargo": "Presidente",
+        "turma": "3º A"
+      },
+      {
+        "nome": "Lucas Moreira",
+        "cargo": "Vice-presidente",
+        "turma": "3º B"
+      },
+      {
+        "nome": "Camila Azevedo",
+        "cargo": "Secretária-geral",
+        "turma": "2º A"
+      },
+      {
+        "nome": "Pedro Antunes",
+        "cargo": "Tesoureiro",
+        "turma": "2º C"
+      },
+      {
+        "nome": "Isabela Rocha",
+        "cargo": "Comunicação",
+        "turma": "2º B"
+      },
+      {
+        "nome": "Mateus Farias",
+        "cargo": "Cultura e eventos",
+        "turma": "1º A"
+      }
+    ],
+    "imagem": "assets/chapas/chapa-1.png"
+  },
+  {
+    "name": "Chapa Atitude",
+    "slogan": "Vamos além do discurso",
+    "sobre": "Acreditamos que o Grêmio se prova nas ações. Nosso foco é melhorar o dia a dia na escola com coisas simples, que dá para ver e usar.",
+    "proposals": [
+      {
+        "titulo": "Campeonatos entre turmas",
+        "texto": "Futsal, vôlei e jogos de tabuleiro durante o ano, com premiação simbólica."
+      },
+      {
+        "titulo": "Espaço de convivência",
+        "texto": "Bancos, jogos e tomadas para o intervalo, em parceria com a direção."
+      },
+      {
+        "titulo": "Grupo de estudos",
+        "texto": "Monitorias entre colegas antes das provas, organizadas pelo Grêmio."
+      }
+    ],
+    "integrantes": [
+      {
+        "nome": "Gabriela Lima",
+        "cargo": "Presidente",
+        "turma": "3º C"
+      },
+      {
+        "nome": "Thiago Barros",
+        "cargo": "Vice-presidente",
+        "turma": "3º A"
+      },
+      {
+        "nome": "Larissa Nunes",
+        "cargo": "Secretária-geral",
+        "turma": "2º B"
+      },
+      {
+        "nome": "Enzo Carvalho",
+        "cargo": "Tesoureiro",
+        "turma": "2º A"
+      },
+      {
+        "nome": "Beatriz Ramos",
+        "cargo": "Comunicação",
+        "turma": "1º B"
+      },
+      {
+        "nome": "Diego Matos",
+        "cargo": "Esportes",
+        "turma": "1º C"
+      }
+    ],
+    "imagem": "assets/chapas/chapa-2.png"
+  },
+  {
+    "name": "Chapa União e Ação",
+    "slogan": "Juntos fazemos acontecer",
+    "sobre": "Nossa chapa une quem gosta de ajudar. Queremos aproximar a escola da comunidade de Paranaguá e dar aos alunos um canal direto com a direção.",
+    "proposals": [
+      {
+        "titulo": "Projeto de voluntariado",
+        "texto": "Ações solidárias bimestrais, como arrecadações e visitas a instituições."
+      },
+      {
+        "titulo": "Canal direto com a direção",
+        "texto": "Reunião mensal entre o Grêmio e a direção, com pauta aberta aos alunos."
+      },
+      {
+        "titulo": "Feira de profissões",
+        "texto": "Profissionais da cidade contam como é o trabalho deles para o Ensino Médio."
+      }
+    ],
+    "integrantes": [
+      {
+        "nome": "Júlia Mendes",
+        "cargo": "Presidente",
+        "turma": "3º B"
+      },
+      {
+        "nome": "Vinícius Prado",
+        "cargo": "Vice-presidente",
+        "turma": "3º C"
+      },
+      {
+        "nome": "Sofia Cardoso",
+        "cargo": "Secretária-geral",
+        "turma": "2º C"
+      },
+      {
+        "nome": "Henrique Lopes",
+        "cargo": "Tesoureiro",
+        "turma": "2º B"
+      },
+      {
+        "nome": "Alice Pires",
+        "cargo": "Ação social",
+        "turma": "1º A"
+      },
+      {
+        "nome": "Bruno Andrade",
+        "cargo": "Comunicação",
+        "turma": "1º B"
+      }
+    ],
+    "imagem": "assets/chapas/chapa-3.png"
+  },
+  {
+    "name": "Chapa Chapas e Movimentos",
+    "slogan": "Voz e ação",
+    "sobre": "Queremos um Grêmio que seja a casa do estudante: aberto a todas as turmas, transparente e com reuniões regulares que qualquer aluno pode acompanhar.",
+    "proposals": [
+      {
+        "titulo": "Grêmio aberto a todas as turmas",
+        "texto": "Um representante por sala, com voz nas decisões do Grêmio."
+      },
+      {
+        "titulo": "Prestação de contas mensal",
+        "texto": "Resumo público do que foi feito, decidido e gasto, no mural e no site."
+      },
+      {
+        "titulo": "Dia do estudante",
+        "texto": "Programação de atividades e lazer organizada junto com as turmas."
+      }
+    ],
+    "integrantes": [
+      {
+        "nome": "Mariana Costa",
+        "cargo": "Presidente",
+        "turma": "3º A"
+      },
+      {
+        "nome": "Felipe Souza",
+        "cargo": "Vice-presidente",
+        "turma": "3º B"
+      },
+      {
+        "nome": "Laura Ferreira",
+        "cargo": "Secretária-geral",
+        "turma": "2º A"
+      },
+      {
+        "nome": "Gustavo Alves",
+        "cargo": "Tesoureiro",
+        "turma": "2º C"
+      },
+      {
+        "nome": "Clara Martins",
+        "cargo": "Representação de turmas",
+        "turma": "1º C"
+      },
+      {
+        "nome": "Leonardo Dias",
+        "cargo": "Comunicação",
+        "turma": "1º A"
+      }
+    ],
+    "imagem": "assets/chapas/chapa-4.png"
+  }
+]

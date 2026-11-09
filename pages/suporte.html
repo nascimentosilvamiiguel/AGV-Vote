@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Suporte e sugestões — Grêmio Estudantil</title>
+    <meta name="theme-color" content="#000435" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@400;600&family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body data-page="suporte">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header id="site-header"></header>
+
+    <main id="conteudo" class="light-page">
+      <div class="page-title">
+        <h1>Suporte e sugestões</h1>
+        <p>Dúvidas, ideias ou problemas? Fale com o Grêmio</p>
+      </div>
+      <div class="container">
+        <form class="form" id="form" novalidate>
+          <div>
+            <label for="nome">Nome</label>
+            <input
+              id="nome"
+              name="nome"
+              type="text"
+              autocomplete="name"
+              maxlength="100"
+              required
+              aria-describedby="e-nome"
+            />
+            <div class="err" id="e-nome"></div>
+          </div>
+          <div>
+            <label for="email">E-mail</label>
+            <input
+              id="email"
+              name="email"
+              type="email"
+              autocomplete="email"
+              maxlength="150"
+              required
+              aria-describedby="e-email"
+            />
+            <div class="err" id="e-email"></div>
+          </div>
+          <div>
+            <label for="assunto">Assunto</label>
+            <select id="assunto" name="assunto" required aria-describedby="e-assunto">
+              <option value="">Selecione…</option>
+              <option>Dúvida</option>
+              <option>Sugestão</option>
+              <option>Proposta ou projeto</option>
+              <option>Problema na votação</option>
+              <option>Outro</option>
+            </select>
+            <div class="err" id="e-assunto"></div>
+          </div>
+          <div>
+            <label for="mensagem">Mensagem</label>
+            <textarea
+              id="mensagem"
+              name="mensagem"
+              maxlength="2000"
+              required
+              aria-describedby="e-mensagem dica"
+            ></textarea>
+            <div class="hint" id="dica"><span id="cont">0</span>/2000 caracteres</div>
+            <div class="err" id="e-mensagem"></div>
+          </div>
+          <button class="btn" id="enviar" type="submit">Enviar</button>
+          <div id="resultado" aria-live="polite"></div>
+        </form>
+      </div>
+    </main>
+
+    <footer id="site-footer"></footer>
+    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js" defer></script>
+    <script src="../pocketbase/root.js" defer></script>
+    <script src="../pocketbase/api.js" defer></script>
+    <script src="../scripts/app.js" defer></script>
+    <script src="../scripts/layout.js" defer></script>
+    <script src="../pocketbase/suporte.js" defer></script>
+  </body>
+</html>

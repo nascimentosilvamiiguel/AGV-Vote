@@ -1,99 +1,109 @@
-// LOGIN + AUTO-CADASTRO
-// Tenta fazer login. Se o usuário não existir, cria automaticamente.
-async function loginOrRegister(event) {
-  event.preventDefault();
 
-  const email = document.getElementById("email").value.trim();
-  const password = document.getElementById("password").value;
+(function() {
+  "use strict";
 
-  if (!email || !password) {
-    alert("Email e senha são obrigatórios");
-    return;
+  const { $, el, safeNext } = window.GA;
+  const API = window.API;
+  const SITE = window.SITE;
+
+  const form = $("#form");
+  const msg = $("#msg");
+  const enviar = $("#enviar");
+  const next = safeNext(new URLSearchParams(location.search).get("next"), "home.html");
+
+  const MODOS = {
+    login: {
+      titulo: "Entrar",
+      botao: "Login",
+      senha: true,
+      senha2: false,
+      alt: "Primeiro acesso",
+      esqueci: true,
+    },
+    cadastro: {
+      titulo: "Primeiro acesso",
+      botao: "Criar conta",
+      senha: true,
+      senha2: true,
+      alt: "Já tenho conta",
+      esqueci: true,
+    },
+    recuperar: {
+      titulo: "Recuperar senha",
+      botao: "Enviar link",
+      senha: false,
+      senha2: false,
+      alt: "Voltar ao login",
+      esqueci: false,
+    },
+  };
+  let modo = "login";
+
+  function mostrar(tipo, texto) {
+    msg.replaceChildren(
+      texto
+        ? el("div", {
+          class: "login-msg " + tipo,
+          role: tipo === "erro" ? "alert" : "status",
+          text: texto,
+        })
+        : "",
+    );
   }
 
-  if (!email.endsWith("@escola.pr.gov.br")) {
-    alert("Use um email institucional válido (@escola.pr.gov.br)");
-    return;
+  function setModo(novo) {
+    modo = novo;
+    const cfg = MODOS[ novo ];
+    mostrar("", "");
+    $("#titulo").textContent = cfg.titulo;
+    enviar.textContent = cfg.botao;
+    $("#campo-senha").hidden = !cfg.senha;
+    $("#campo-senha2").hidden = !cfg.senha2;
+    $("#senha").required = cfg.senha;
+    $("#senha2").required = cfg.senha2;
+    $("#senha").autocomplete = novo === "cadastro" ? "new-password" : "current-password";
+    $("#alt-modo").textContent = cfg.alt;
+    $("#esqueci").hidden = !cfg.esqueci;
   }
 
-  if (password.length < 6) {
-    alert("Senha deve ter no mínimo 6 caracteres");
-    return;
-  }
+  $("#alt-modo").addEventListener("click", () => setModo(modo === "login" ? "cadastro" : "login"));
+  $("#esqueci").addEventListener("click", () => setModo("recuperar"));
+  $("#email").placeholder = "E-mail institucional";
+  $("#dominio").textContent = SITE.dominioEmail;
 
-  try {
-    // 1ª tentativa: login
-    await pb.collection("users").authWithPassword(email, password);
-    window.location.href = "home.html";
-  } catch (loginErr) {
-    // Se falhou, pode ser porque o usuário não existe → tenta criar
-    console.log("Login falhou, tentando auto-cadastro...", loginErr);
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
 
-    // Extrai o nome do email (ex: "joao.silva" de "joao.silva@escola.pr.gov.br")
-    const nameFromEmail = email.split("@")[0].replace(/\./g, " ");
-    // Capitaliza (ex: "joao silva" → "Joao Silva")
-    const name = nameFromEmail
-      .split(" ")
-      .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
-      .join(" ");
+    const email = $("#email").value.trim().toLowerCase();
+    const senha = $("#senha").value;
+    const senha2 = $("#senha2").value;
 
-    const data = {
-      email,
-      password,
-      passwordConfirm: password,
-      name,
-      role: "student", // role padrão para novos usuários
-    };
-
-    try {
-      await pb.collection("users").create(data);
-      // Agora faz login com a conta recém-criada
-      await pb.collection("users").authWithPassword(email, password);
-      window.location.href = "home.html";
-    } catch (createErr) {
-      console.log(createErr);
-      const errorMsg =
-        createErr.data?.message || createErr.message || "Erro ao acessar conta";
-      alert("Erro: " + errorMsg);
+    const erroEmail = API.validarEmail(email);
+    if (erroEmail) return mostrar("erro", erroEmail);
+    if (modo !== "recuperar") {
+      const erroSenha = API.validarSenha(senha);
+      if (erroSenha) return mostrar("erro", erroSenha);
     }
-  }
-}
+    if (modo === "cadastro" && senha !== senha2) return mostrar("erro", "As senhas não conferem.");
 
-// ESQUECI A SENHA
-async function requestPasswordReset() {
-  const email = document.getElementById("resetEmail").value.trim();
+    enviar.disabled = true;
+    mostrar("", "");
+    try {
+      if (modo === "recuperar") {
+        await API.recuperarSenha(email);
+        mostrar("ok", "Enviamos um link de redefinição para o seu e-mail. Confira a caixa de entrada.");
+        return;
+      }
+      if (modo === "cadastro") await API.cadastrar(email, senha);
+      else await API.entrar(email, senha);
+      mostrar("ok", "Tudo certo! Redirecionando…");
+      location.href = next;
+    } catch (err) {
+      mostrar("erro", err.message);
+    } finally {
+      enviar.disabled = false;
+    }
+  });
 
-  if (!email) {
-    alert("Digite seu email");
-    return;
-  }
-
-  if (!email.endsWith("@escola.pr.gov.br")) {
-    alert("Use um email institucional válido (@escola.pr.gov.br)");
-    return;
-  }
-
-  try {
-    await pb.collection("users").requestPasswordReset(email);
-    alert("Link de redefinição enviado! Verifique seu email.");
-    document.getElementById("resetModal").style.display = "none";
-    document.getElementById("resetEmail").value = "";
-  } catch (err) {
-    console.log(err);
-    const errorMsg = err.data?.message || err.message || "Erro ao enviar email";
-    alert("Erro: " + errorMsg);
-  }
-}
-
-// LOGOUT
-function logout() {
-  pb.authStore.clear();
-  window.location.href = "login.html";
-}
-
-// PROTEÇÃO DE PÁGINA
-function checkAuth() {
-  if (!pb.authStore.isValid) {
-    window.location.href = "login.html";
-  }
-}
+  if (API.logado()) location.replace(next);
+})();

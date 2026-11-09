@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="fundo" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2b0f63"/>
+      <stop offset="1" stop-color="#6d28d9"/>
+    </linearGradient>
+    <linearGradient id="m" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#22e1ff"/>
+      <stop offset="1" stop-color="#ff5fd0"/>
+    </linearGradient>
+    <path id="topo" d="M 54 256 A 202 202 0 0 1 458 256"/>
+    <clipPath id="c"><circle cx="256" cy="256" r="236"/></clipPath>
+  </defs>
+  <circle cx="256" cy="256" r="254" fill="#12072e"/>
+  <circle cx="256" cy="256" r="236" fill="url(#fundo)"/>
+  <!-- ondas de movimento -->
+  <g clip-path="url(#c)" fill="none" stroke="#22e1ff" stroke-linecap="round">
+    <path d="M -20 392 Q 70 352 160 392 T 340 392 T 530 392" stroke-width="10" opacity="0.9"/>
+    <path d="M -20 424 Q 70 384 160 424 T 340 424 T 530 424" stroke-width="8" opacity="0.55"/>
+    <path d="M -20 454 Q 70 414 160 454 T 340 454 T 530 454" stroke-width="6" opacity="0.3"/>
+  </g>
+  <!-- M em movimento -->
+  <g fill="none" stroke="url(#m)" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 148 336 L 148 178 L 256 276 L 364 178 L 364 336" stroke-width="40"/>
+  </g>
+  <g stroke="#fff" stroke-linecap="round" opacity="0.85">
+    <line x1="70" y1="208" x2="112" y2="208" stroke-width="8"/>
+    <line x1="84" y1="238" x2="120" y2="238" stroke-width="8"/>
+    <line x1="64" y1="268" x2="108" y2="268" stroke-width="8"/>
+  </g>
+  <circle cx="364" cy="136" r="14" fill="#ffd23f"/>
+  <text font-family="Inter, DejaVu Sans, sans-serif" font-weight="900" font-size="29" letter-spacing="5" fill="#fff" text-anchor="middle">
+    <textPath href="#topo" startOffset="50%">CHAPAS E MOVIMENTOS</textPath>
+  </text>
+  <circle cx="256" cy="256" r="246" fill="none" stroke="#22e1ff" stroke-width="3"/>
+</svg>

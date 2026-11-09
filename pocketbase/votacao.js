@@ -1,123 +1,247 @@
-// votacao.js - Página de votação (apenas nome, imagem e botão de votar)
 
-const ELECTION_ID = "gremio_2026";  // identificador único da eleição
+(function () {
+  "use strict";
 
-async function initVotacao() {
-  // 1. Protege a página (apenas usuários logados podem votar)
-  if (!pb.authStore.isValid) {
-    window.location.href = "login.html";
-    return;
+  const { $, el, wait, showState, openModal, closeModal, bindModal, iniciais } = window.GA;
+  const API = window.API;
+  const SITE = window.SITE;
+
+  const grid = $("#grid");
+  const aviso = $("#aviso");
+  const brancoWrap = $("#branco");
+  const resultadoSec = $("#resultado");
+  const dlgVoto = $("#dlg-voto");
+  const dlgInfo = $("#dlg-info");
+
+  let chapas = [];
+  let voto = null;  
+  let pendente = null;  
+
+  const jaVotou = () => voto !== null;
+  const nomeDe = (id) =>
+    id === "branco" ? "Voto em branco" : chapas.find((c) => c.id === id)?.nome || "";
+
+  function logoEl(chapa, classe, tamanho) {
+    if (chapa.logo)
+      return el("img", {
+        class: classe,
+        src: chapa.logo,
+        alt: `Logotipo da ${chapa.nome}`,
+        width: String(tamanho),
+        height: String(tamanho),
+      });
+    return el("span", {
+      class: classe + " logo-vazio",
+      role: "img",
+      "aria-label": `Chapa ${chapa.nome}`,
+      text: iniciais(chapa.nome.replace(/^Chapa /, "")),
+    });
   }
 
-  const userId = pb.authStore.model.id;
+  
 
-  // 2. Verifica se o usuário já votou nesta eleição
-  try {
-    const existingVotes = await pb.collection("votos").getList(1, 1, {
-      filter: `user = "${userId}" && election_id = "${ELECTION_ID}"`,
-    });
+  function renderAviso() {
+    const texto = jaVotou()
+      ? `Seu voto foi registrado: ${voto.branco ? "voto em branco" : nomeDe(voto.chapaId)}. Obrigado por participar!`
+      : "Votação aberta. Depois de confirmado, o voto não pode ser alterado.";
+    aviso.replaceChildren(
+      el("div", { class: "banner " + (jaVotou() ? "ok" : "info"), role: "status", text: texto }),
+    );
+  }
 
-    if (existingVotes.totalItems > 0) {
-      mostrarJaVotou();
+  
+
+  function renderCards() {
+    const bloqueado = jaVotou();
+
+    grid.replaceChildren(
+      ...chapas.map((chapa, i) => {
+        const escolhida = voto?.chapaId === chapa.id;
+
+        const logoBtn = el(
+          "button",
+          { class: "logo-btn", type: "button", "aria-label": `Ver propostas da ${chapa.nome}` },
+          logoEl(chapa, "logo", 150),
+        );
+        logoBtn.addEventListener("click", () => abrirInfo(chapa));
+
+        const votarBtn = el(
+          "button",
+          {
+            class: "btn votar",
+            type: "button",
+            "aria-label": `Votar na ${chapa.nome}`,
+            disabled: bloqueado,
+          },
+          escolhida ? "Seu voto" : "Votar",
+        );
+        votarBtn.addEventListener("click", () => iniciarVoto(chapa.id));
+
+        return el(
+          "article",
+          { class: "chapa-card" + (escolhida ? " chosen" : ""), style: `--i:${i}` },
+          el("h2", { class: "sr-only", text: chapa.nome }),
+          logoBtn,
+          votarBtn,
+        );
+      }),
+    );
+
+    brancoWrap.hidden = !SITE.votoBranco;
+    $("button", brancoWrap).disabled = bloqueado;
+  }
+
+  
+
+  async function renderResultado() {
+    if (!SITE.resultadoParcial || !jaVotou()) {
+      resultadoSec.hidden = true;
       return;
     }
-  } catch (err) {
-    console.error("Erro ao verificar voto:", err);
-  }
-
-  // 3. Carrega as chapas do PocketBase
-  try {
-    const chapas = await pb.collection("chapas").getFullList({
-      sort: "name",
-    });
-    renderizarChapasVotacao(chapas);
-  } catch (err) {
-    console.error("Erro ao carregar chapas:", err);
-    document.getElementById("chapas-container").innerHTML =
-      "<p>Erro ao carregar chapas. Tente novamente.</p>";
-  }
-}
-
-function renderizarChapasVotacao(chapas) {
-  const container = document.getElementById("chapas-container");
-  container.innerHTML = "";
-
-  if (chapas.length === 0) {
-    container.innerHTML = "<p>Nenhuma chapa cadastrada ainda.</p>";
-    return;
-  }
-
-  chapas.forEach((chapa) => {
-    // URL da imagem (se tiver campo de imagem no PocketBase)
-    const imgUrl = chapa.imagem ? pb.files.getUrl(chapa, chapa.imagem) : null;
-
-    const div = document.createElement("div");
-    div.className = "chapa-card";
-    div.innerHTML = `
-      ${imgUrl ? `<img src="${imgUrl}" alt="${escapeHtml(chapa.name)}" />` : ""}
-      <h2>${escapeHtml(chapa.name)}</h2>
-      <button onclick="votar('${chapa.id}', '${escapeHtml(chapa.name)}')">VOTAR!</button>
-      <a href="./chapas.html" class="link-detalhes">Ver propostas →</a>
-    `;
-    container.appendChild(div);
-  });
-}
-
-async function votar(chapaId, chapaNome) {
-  const confirmou = confirm(
-    `Tem certeza que deseja votar na "${chapaNome}"?\n\nEsta ação não pode ser desfeita.`,
-  );
-  if (!confirmou) return;
-
-  const userId = pb.authStore.model.id;
-
-  try {
-    await pb.collection("votos").create({
-      user: userId,
-      chapa: chapaId,
-      election_id: ELECTION_ID,
-    });
-
-    mostrarVotoRegistrado(chapaNome);
-  } catch (err) {
-    console.error("Erro ao registrar voto:", err);
-
-    // Verifica se é erro de duplicata (caso a rule do PB bloqueie)
-    if (err.status === 400) {
-      alert("Você já votou nesta eleição.");
-      mostrarJaVotou();
-    } else {
-      alert("Erro ao registrar seu voto. Tente novamente.");
+    let dados;
+    try {
+      dados = await API.resultado();
+    } catch {
+      resultadoSec.hidden = true;
+      return;
     }
+    const total = dados.reduce((soma, r) => soma + r.votos, 0) || 1;
+
+    $("#resultado-lista").replaceChildren(
+      ...dados.map((r) => {
+        const pct = Math.round((r.votos / total) * 100);
+        const preenchimento = el("span");
+        preenchimento.dataset.pct = pct;
+        return el(
+          "div",
+          { class: "bar-row" },
+          el("span", { text: r.nome }),
+          el("div", { class: "bar", role: "img", "aria-label": `${r.nome}: ${pct}%` }, preenchimento),
+          el("span", { text: `${r.votos} (${pct}%)` }),
+        );
+      }),
+    );
+    resultadoSec.hidden = false;
+    requestAnimationFrame(() =>
+      requestAnimationFrame(() =>
+        resultadoSec
+          .querySelectorAll(".bar > span")
+          .forEach((s) => (s.style.width = s.dataset.pct + "%")),
+      ),
+    );
   }
-}
 
-function mostrarJaVotou() {
-  const container = document.getElementById("chapas-container");
-  container.innerHTML = `
-    <div class="aviso">
-      <h2>✅ Você já votou!</h2>
-      <p>Seu voto já foi registrado nesta eleição.</p>
-      <p>Obrigado por participar!</p>
-    </div>
-  `;
-}
+  
 
-function mostrarVotoRegistrado(chapaNome) {
-  const container = document.getElementById("chapas-container");
-  container.innerHTML = `
-    <div class="aviso">
-      <h2>🎉 Voto registrado!</h2>
-      <p>Você votou na <strong>${escapeHtml(chapaNome)}</strong>.</p>
-      <p>Obrigado por participar da eleição do Grêmio Estudantil!</p>
-    </div>
-  `;
-}
+  function abrirInfo(chapa) {
+    $("#info-logo-wrap").replaceChildren(logoEl(chapa, "modal-logo", 76));
+    $("#info-titulo").textContent = chapa.nome;
 
-// Função utilitária para escapar HTML e evitar XSS
-function escapeHtml(text) {
-  if (!text) return "";
-  const div = document.createElement("div");
-  div.textContent = text;
-  return div.innerHTML;
-}
+    const partes = [];
+    if (chapa.slogan) partes.push(`“${chapa.slogan}”`);
+    if (chapa.sobre) partes.push(chapa.sobre);
+    if (chapa.propostas.length)
+      partes.push("Propostas:\n" + chapa.propostas.map((p) => "• " + p.titulo).join("\n"));
+    $("#info-texto").textContent = partes.join("\n\n") || "Esta chapa ainda não publicou propostas.";
+
+    const votar = $("#info-votar");
+    votar.hidden = jaVotou();
+    votar.onclick = async () => {
+      await closeModal(dlgInfo);
+      iniciarVoto(chapa.id);
+    };
+    openModal(dlgInfo);
+  }
+
+  
+
+  function resetarJanelaVoto() {
+    $("#voto-confirmar-view").hidden = false;
+    $("#voto-pronto-view").hidden = true;
+    $("#voto-erro").textContent = "";
+    const ok = $("#voto-ok");
+    ok.disabled = false;
+    ok.textContent = "Confirmar";
+    dlgVoto.dataset.busy = "false";
+  }
+
+  function iniciarVoto(id) {
+    if (jaVotou()) return;
+    pendente = id;
+    resetarJanelaVoto();
+
+    const chapa = chapas.find((c) => c.id === id);
+    $("#voto-logo-wrap").replaceChildren(chapa ? logoEl(chapa, "modal-logo", 76) : "");
+    $("#voto-nome").textContent = nomeDe(id);
+    openModal(dlgVoto);
+    $("#voto-ok").focus();
+  }
+
+  async function confirmarVoto() {
+    if (pendente === null) return;
+    const ok = $("#voto-ok");
+    dlgVoto.dataset.busy = "true";
+    ok.disabled = true;
+    ok.textContent = "Registrando…";
+    $("#voto-erro").textContent = "";
+
+    try {
+      await API.votar(pendente);
+      voto = pendente === "branco" ? { branco: true } : { chapaId: pendente };
+    } catch (err) {
+      if (err.jaVotou) {
+        voto = await API.meuVoto().catch(() => ({ branco: true }));
+        dlgVoto.dataset.busy = "false";
+        await closeModal(dlgVoto);
+        atualizar();
+        return;
+      }
+      $("#voto-erro").textContent = err.message;
+      ok.disabled = false;
+      ok.textContent = "Tentar de novo";
+      dlgVoto.dataset.busy = "false";
+      return;
+    }
+    pendente = null;
+
+    $("#voto-confirmar-view").hidden = true;
+    $("#voto-pronto-view").hidden = false;
+    await wait(1500);
+
+    dlgVoto.dataset.busy = "false";
+    await closeModal(dlgVoto);
+    atualizar();
+    if (!resultadoSec.hidden) resultadoSec.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+
+  
+
+  function atualizar() {
+    renderAviso();
+    renderCards();
+    renderResultado();
+  }
+
+  [dlgVoto, dlgInfo].forEach(bindModal);
+  dlgVoto.addEventListener("close", () => {
+    pendente = null;
+    resetarJanelaVoto();
+  });
+  $("#voto-ok").addEventListener("click", confirmarVoto);
+  $("#btn-branco").addEventListener("click", () => iniciarVoto("branco"));
+
+  (async function init() {
+    if (!API.logado()) {
+      location.replace("login.html?next=votacao.html");
+      return;
+    }
+    showState(grid, "loading", "Carregando chapas…");
+    try {
+      [chapas, voto] = await Promise.all([API.chapas(), API.meuVoto()]);
+    } catch (err) {
+      return showState(grid, "erro", err.message || "Não foi possível carregar a votação.");
+    }
+    if (!chapas.length) return showState(grid, "empty", "Nenhuma chapa cadastrada ainda.");
+    atualizar();
+  })();
+})();

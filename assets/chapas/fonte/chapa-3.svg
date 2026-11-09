@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <path id="base" d="M 62 256 A 194 194 0 0 0 450 256"/>
+  </defs>
+  <circle cx="256" cy="256" r="254" fill="#0a4a46"/>
+  <circle cx="256" cy="256" r="232" fill="#fff4de"/>
+  <circle cx="256" cy="256" r="222" fill="none" stroke="#0a4a46" stroke-width="3" stroke-dasharray="3 9" stroke-linecap="round"/>
+  <!-- três círculos que se encontram: união -->
+  <g style="mix-blend-mode:multiply" opacity="0.95">
+    <circle cx="256" cy="150" r="76" fill="#f5b301"/>
+    <circle cx="206" cy="232" r="76" fill="#0fa391"/>
+    <circle cx="306" cy="232" r="76" fill="#ee5a5a"/>
+  </g>
+  <!-- seta de ação cruzando o encontro -->
+  <g fill="none" stroke="#0a4a46" stroke-width="12" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M 224 262 L 256 214 L 288 262"/>
+    <path d="M 256 214 L 256 300"/>
+  </g>
+  <text font-family="Inter, DejaVu Sans, sans-serif" font-weight="900" font-size="40" letter-spacing="5" fill="#0a4a46" text-anchor="middle">
+    <textPath href="#base" startOffset="50%">UNIÃO E AÇÃO</textPath>
+  </text>
+</svg>

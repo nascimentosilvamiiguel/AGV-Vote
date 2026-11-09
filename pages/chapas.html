@@ -1,74 +1,51 @@
 <!doctype html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Chapas — AGV Vote</title>
-  <link rel="stylesheet" href="/styles/home.css" />
-  <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
-  <script src="/pocketbase/chapas.js"></script>
-  <script src="/pocketbase/root.js"></script>
-</head>
-<body onload="initChapas()">
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Chapas — Grêmio Estudantil</title>
+    <meta
+      name="description"
+      content="Propostas e integrantes das chapas que disputam o Grêmio Estudantil."
+    />
+    <meta name="theme-color" content="#000435" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@400;600&family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body data-page="chapas">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header id="site-header"></header>
 
-  <!-- Barra de navegação -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <a href="./home.html">HOME</a>
-      <a href="./home.html#sobre">SOBRE</a>
-      <a href="./form.html">CADASTRE SUA CHAPA</a>
-    </div>
-    <div class="nav-center">
-      <span>GRÊMIO ESTUDANTIL</span>
-      <small>barra de navegação</small>
-    </div>
-    <div class="nav-right">
-      <a href="#">NOTICIAS</a>
-      <a href="#">SUPORTE</a>
-    </div>
-  </nav>
+    <main id="conteudo" class="light-page">
+      <div class="page-title">
+        <h1>Conheça as chapas</h1>
+        <p>Propostas e integrantes de cada candidatura</p>
+      </div>
 
-  <!-- Header de Chapas -->
-  <header class="chapas-header">
-    <h1>ESCOLHA A CHAPA QUE MAIS COMBINA COM VOCÊ!</h1>
-    <p>SUA ESCOLHA VAI DEFINIR O FUTURO DO COLÉGIO</p>
-  </header>
+      <div class="container">
 
-  <!-- Grid de Chapas -->
-    <div id="chapas-container">
-      <p>Carregando chapas...</p>
-    </div>
+        <div class="chapa-tabs" id="tabs" role="tablist" aria-label="Chapas"></div>
 
-  <!-- Sobre Section -->
-  <section id="sobre" class="sobre">
-    <h2>SOBRE</h2>
-    <div class="sobre-content">
-      <!-- Conteúdo sobre o grêmio -->
-    </div>
-  </section>
+        <article class="chapa-panel" id="painel" role="tabpanel" tabindex="-1"></article>
+      </div>
+    </main>
 
-  <!-- Footer -->
-  <footer>
-    <p>R. Júlia da Costa, 780 - Campo Grande, Paranaguá - PR, 83203-060</p>
-    <div class="footer-contacts">
-      <span>(41) 3423-3819</span>
-      <span>pngalbertogomes@seed.pr.gov.br</span>
-    </div>
-    <p class="copyright">© 2026 Rafael N. Silva. Todos os direitos reservados.</p>
-  </footer>
-
-  <!-- Área logada -->
-  <div class="login-area" style="display:none;">
-    <h1>Área logada</h1>
-    <p id="user"></p>
-    <button onclick="logout()">Sair</button>
-  </div>
-
-  <script>
-    const user = pb.authStore.model;
-    if (user) {
-      document.getElementById("user").textContent = "Logado como: " + user.email;
-    }
-  </script>
-</body>
+    <footer id="site-footer"></footer>
+    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js" defer></script>
+    <script src="../pocketbase/root.js" defer></script>
+    <script src="../pocketbase/api.js" defer></script>
+    <script src="../scripts/app.js" defer></script>
+    <script src="../scripts/layout.js" defer></script>
+    <script src="../pocketbase/chapas.js" defer></script>
+  </body>
 </html>

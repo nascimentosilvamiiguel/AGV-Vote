@@ -1,53 +1,93 @@
 <!doctype html>
-<html lang="pt-br">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Votação — AGV Vote</title>
-  <link rel="stylesheet" href="/styles/home.css" />
-  <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js"></script>
-  <script src="/pocketbase/root.js"></script>
-  <script src="/pocketbase/votacao.js" defer></script>
-</head>
-<body onload="initVotacao()">
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Votação — Grêmio Estudantil</title>
+    <meta name="theme-color" content="#000435" />
+    <link rel="icon" href="../favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="../assets/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="../assets/favicon-16x16.png" />
+    <link rel="apple-touch-icon" href="../assets/apple-touch-icon.png" />
+    <link rel="manifest" href="../assets/site.webmanifest" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&family=Poppins:wght@400;600&family=Open+Sans:wght@700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="../styles/style.css" />
+  </head>
+  <body data-page="votacao" data-auth="required">
+    <a class="skip-link" href="#conteudo">Pular para o conteúdo</a>
+    <header id="site-header"></header>
 
-  <!-- Barra de navegação -->
-  <nav class="navbar">
-    <div class="nav-left">
-      <a href="./home.html">HOME</a>
-      <a href="./home.html#sobre">SOBRE</a>
-      <a href="./chapas.html">CHAPAS</a>
-    </div>
-    <div class="nav-center">
-      <span>GRÊMIO ESTUDANTIL</span>
-      <small>barra de navegação</small>
-    </div>
-    <div class="nav-right">
-      <a href="#">NOTICIAS</a>
-      <a href="#">SUPORTE</a>
-    </div>
-  </nav>
+    <main id="conteudo" class="light-page">
+      <div class="page-title">
+        <h1>Escolha a chapa que mais combina com você!</h1>
+        <p>Sua escolha vai definir o futuro do colégio</p>
+        <a class="link-chapas" href="chapas.html"
+          >Conheça as propostas e os integrantes de cada chapa</a
+        >
+      </div>
 
-  <main class="votacao-container">
-    <h1>Eleição do Grêmio Estudantil</h1>
-    <p>Escolha sua chapa e vote! Cada aluno tem direito a um voto.</p>
-    <p class="sub-info">Quer conhecer as propostas? <a href="./chapas.html">Clique aqui para ver os detalhes das chapas</a>.</p>
+      <div id="aviso"></div>
+      <div class="chapas-grid" id="grid"></div>
 
-    <!-- As chapas são renderizadas aqui pelo JS -->
-    <div id="chapas-container">
-      <p>Carregando chapas...</p>
-    </div>
-  </main>
+      <div class="branco-wrap" id="branco" hidden>
+        <p>Prefere não escolher nenhuma chapa?</p>
+        <button class="btn btn-small" id="btn-branco" type="button">Votar em branco</button>
+      </div>
 
-  <!-- Footer -->
-  <footer>
-    <p>R. Júlia da Costa, 780 - Campo Grande, Paranaguá - PR, 83203-060</p>
-    <div class="footer-contacts">
-      <span>(41) 3423-3819</span>
-      <span>pngalbertogomes@seed.pr.gov.br</span>
-    </div>
-    <p class="copyright">© 2026 Rafael N. Silva. Todos os direitos reservados.</p>
-  </footer>
+      <section class="resultado" id="resultado" hidden aria-labelledby="titulo-resultado">
+        <h2 id="titulo-resultado">Resultado parcial</h2>
+        <div id="resultado-lista"></div>
+      </section>
+    </main>
 
-</body>
+    <!-- Confirmação de voto -->
+    <dialog class="modal modal-sm" id="dlg-voto" aria-labelledby="voto-titulo">
+      <div class="modal-body" id="voto-confirmar-view">
+        <div id="voto-logo-wrap"></div>
+        <h2 id="voto-titulo">Confirmar voto?</h2>
+        <p class="modal-text"><strong id="voto-nome"></strong></p>
+        <p class="modal-hint">Depois de confirmado, não será possível alterar.</p>
+        <p id="voto-erro" role="alert"></p>
+        <div class="modal-actions">
+          <button class="btn btn-small btn-outline" type="button" data-close>Cancelar</button>
+          <button class="btn btn-small" type="button" id="voto-ok">Confirmar</button>
+        </div>
+      </div>
+
+      <div class="modal-body" id="voto-pronto-view" role="status" hidden>
+        <svg class="check" viewBox="0 0 52 52" aria-hidden="true">
+          <circle cx="26" cy="26" r="24" />
+          <path d="M14 27l8 8 16-17" />
+        </svg>
+        <h2>Voto registrado!</h2>
+        <p class="modal-hint">Obrigado por participar.</p>
+      </div>
+    </dialog>
+
+    <!-- Propostas da chapa -->
+    <dialog class="modal" id="dlg-info" aria-labelledby="info-titulo">
+      <div class="modal-body">
+        <div id="info-logo-wrap"></div>
+        <h2 id="info-titulo"></h2>
+        <p class="modal-text modal-left" id="info-texto"></p>
+        <div class="modal-actions">
+          <button class="btn btn-small btn-outline" type="button" data-close>Fechar</button>
+          <button class="btn btn-small" type="button" id="info-votar">Votar nesta chapa</button>
+        </div>
+      </div>
+    </dialog>
+
+    <footer id="site-footer"></footer>
+    <script src="https://unpkg.com/pocketbase/dist/pocketbase.umd.js" defer></script>
+    <script src="../pocketbase/root.js" defer></script>
+    <script src="../pocketbase/api.js" defer></script>
+    <script src="../scripts/app.js" defer></script>
+    <script src="../scripts/layout.js" defer></script>
+    <script src="../pocketbase/votacao.js" defer></script>
+  </body>
 </html>
