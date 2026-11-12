@@ -11,10 +11,6 @@
     "home.html",
   );
 
-  // URL fallback garantida do PocketBase
-  const POCKETBASE_URL =
-    API?.baseURL || "https://lgg6kemizx53xeo.pwz5.pocketbasecloud.com";
-
   function mostrar(tipo, texto) {
     msg.replaceChildren(
       texto
