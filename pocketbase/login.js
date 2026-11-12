@@ -11,6 +11,10 @@
     "home.html",
   );
 
+  // URL fallback garantida do PocketBase
+  const POCKETBASE_URL =
+    API?.baseURL || "https://lgg6kemizx53xeo.pwz5.pocketbasecloud.com";
+
   function mostrar(tipo, texto) {
     msg.replaceChildren(
       texto
@@ -33,13 +37,15 @@
         } else {
           const pbInstance =
             window.pb ||
-            (window.PocketBase
-              ? new PocketBase(API?.baseURL || window.location.origin)
-              : null);
+            (window.PocketBase ? new PocketBase(POCKETBASE_URL) : null);
+
           if (pbInstance) {
-            await pbInstance
-              .collection("users")
-              .authWithOAuth2({ provider: "google" });
+            await pbInstance.collection("users").authWithOAuth2({
+              provider: "google",
+              createData: {
+                emailVisibility: true,
+              },
+            });
           } else {
             throw new Error(
               "Não foi possível inicializar a autenticação do PocketBase.",
