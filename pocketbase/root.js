@@ -1,4 +1,4 @@
-const POCKETBASE_URL = "http://127.0.0.1:8020";
+const POCKETBASE_URL = "https://lgg6kemizx53xeo.pwz5.pocketbasecloud.com";
 
 window.pb = new PocketBase(POCKETBASE_URL);
 
