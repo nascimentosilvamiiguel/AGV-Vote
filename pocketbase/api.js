@@ -1,84 +1,32 @@
-
-(function() {
+(function () {
   "use strict";
 
   const pb = window.pb;
   const SITE = window.SITE;
 
-   
-  const usuario = () => (pb.authStore.isValid ? pb.authStore.record || pb.authStore.model : null);
+  const usuario = () =>
+    pb.authStore.isValid ? pb.authStore.record || pb.authStore.model : null;
 
-  
   function mensagemDeErro(err, padrao) {
     if (!err) return padrao;
-    if (err.status === 0) return "Não foi possível conectar ao servidor. Verifique a rede da escola.";
+    if (err.status === 0)
+      return "Não foi possível conectar ao servidor. Verifique a rede da escola.";
     if (err.status === 403) return "Você não tem permissão para fazer isso.";
-    if (err.status === 429) return "Muitas tentativas. Aguarde um instante e tente de novo.";
+    if (err.status === 429)
+      return "Muitas tentativas. Aguarde um instante e tente de novo.";
     return padrao;
   }
 
-  
-
-  function nomeDoEmail(email) {
-    return email
-      .split("@")[ 0 ]
-      .replace(/[._-]+/g, " ")
-      .split(" ")
-      .filter(Boolean)
-      .map((p) => p.charAt(0).toUpperCase() + p.slice(1))
-      .join(" ");
-  }
-
-  function validarEmail(email) {
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return "Informe um e-mail válido.";
-    if (!email.endsWith(SITE.dominioEmail))
-      return `Use seu e-mail institucional (${SITE.dominioEmail}).`;
-    return "";
-  }
-
-  function validarSenha(senha) {
-    return senha.length < SITE.senhaMinima
-      ? `A senha precisa ter pelo menos ${SITE.senhaMinima} caracteres.`
-      : "";
-  }
-
-  async function entrar(email, senha) {
+  async function entrarComGoogle() {
     try {
-      await pb.collection("users").authWithPassword(email, senha);
+      await pb.collection("users").authWithOAuth2({ provider: "google" });
     } catch (err) {
       throw new Error(
-        err.status === 400
-          ? "E-mail ou senha incorretos."
-          : mensagemDeErro(err, "Não foi possível entrar. Tente novamente."),
+        mensagemDeErro(
+          err,
+          "Não foi possível autenticar com o Google. Tente novamente.",
+        ),
       );
-    }
-  }
-
-  async function cadastrar(email, senha) {
-    try {
-      await pb.collection("users").create({
-        email,
-        password: senha,
-        passwordConfirm: senha,
-        name: nomeDoEmail(email),
-        role: "student",  
-      });
-    } catch (err) {
-      const jaExiste = err.data?.data?.email;
-      throw new Error(
-        jaExiste
-          ? "Esse e-mail já tem conta. Use “Já tenho conta” para entrar."
-          : mensagemDeErro(err, "Não foi possível criar a conta. Tente novamente."),
-      );
-    }
-    await entrar(email, senha);
-  }
-
-  async function recuperarSenha(email) {
-    try {
-      await pb.collection("users").requestPasswordReset(email);
-    } catch (err) {
-      throw new Error(mensagemDeErro(err, "Não foi possível enviar o e-mail. Tente novamente."));
     }
   }
 
@@ -86,18 +34,16 @@
     pb.authStore.clear();
   }
 
-  
-
   const linhas = (texto) =>
     String(texto)
       .split(/\r?\n/)
       .map((l) => l.trim())
       .filter(Boolean);
 
-  
   function normalizarPropostas(valor) {
     if (!valor) return [];
-    if (typeof valor === "string") return linhas(valor).map((titulo) => ({ titulo, texto: "" }));
+    if (typeof valor === "string")
+      return linhas(valor).map((titulo) => ({ titulo, texto: "" }));
     if (Array.isArray(valor))
       return valor
         .map((p) => (typeof p === "string" ? { titulo: p, texto: "" } : p))
@@ -113,7 +59,9 @@
       sobre: registro.sobre || "",
       logo: registro.imagem ? pb.files.getUrl(registro, registro.imagem) : null,
       propostas: normalizarPropostas(registro.proposals),
-      integrantes: Array.isArray(registro.integrantes) ? registro.integrantes : [],
+      integrantes: Array.isArray(registro.integrantes)
+        ? registro.integrantes
+        : [],
     };
   }
 
@@ -122,11 +70,20 @@
       const lista = await pb.collection("chapas").getFullList({ sort: "name" });
       return lista.map(normalizarChapa);
     } catch (err) {
-      throw new Error(mensagemDeErro(err, "Não foi possível carregar as chapas."));
+      throw new Error(
+        mensagemDeErro(err, "Não foi possível carregar as chapas."),
+      );
     }
   }
 
-  async function criarChapa({ nome, slogan, sobre, propostas, integrantes, imagem }) {
+  async function criarChapa({
+    nome,
+    slogan,
+    sobre,
+    propostas,
+    integrantes,
+    imagem,
+  }) {
     const dados = new FormData();
     dados.append("name", nome);
     dados.append("slogan", slogan);
@@ -139,19 +96,20 @@
       await pb.collection("chapas").create(dados);
     } catch (err) {
       throw new Error(
-        mensagemDeErro(err, "Não foi possível cadastrar a chapa. Confira os campos e tente de novo."),
+        mensagemDeErro(
+          err,
+          "Não foi possível cadastrar a chapa. Confira os campos e tente de novo.",
+        ),
       );
     }
   }
-
-  
 
   async function meuVoto() {
     const lista = await pb.collection("votos").getList(1, 1, {
       filter: `user = "${usuario().id}" && election_id = "${SITE.eleicaoId}"`,
     });
     if (!lista.totalItems) return null;
-    const voto = lista.items[ 0 ];
+    const voto = lista.items[0];
     return voto.branco ? { branco: true } : { chapaId: voto.chapa };
   }
 
@@ -162,11 +120,13 @@
     try {
       await pb.collection("votos").create(dados);
     } catch (err) {
-       
       const e = new Error(
         err.status === 400
           ? "Você já votou nesta eleição."
-          : mensagemDeErro(err, "Não foi possível registrar seu voto. Tente novamente."),
+          : mensagemDeErro(
+              err,
+              "Não foi possível registrar seu voto. Tente novamente.",
+            ),
       );
       e.jaVotou = err.status === 400;
       throw e;
@@ -174,18 +134,28 @@
   }
 
   async function resultado() {
-    const [ linhasDb, todas ] = await Promise.all([
-      pb.collection("resultados").getFullList({ filter: `election_id = "${SITE.eleicaoId}"` }),
+    const [linhasDb, todas] = await Promise.all([
+      pb
+        .collection("resultados")
+        .getFullList({ filter: `election_id = "${SITE.eleicaoId}"` }),
       chapas(),
     ]);
-    const porChapa = new Map(linhasDb.map((l) => [ l.chapa || "branco", l.total ]));
-    const itens = todas.map((c) => ({ id: c.id, nome: c.nome, votos: porChapa.get(c.id) || 0 }));
+    const porChapa = new Map(
+      linhasDb.map((l) => [l.chapa || "branco", l.total]),
+    );
+    const itens = todas.map((c) => ({
+      id: c.id,
+      nome: c.nome,
+      votos: porChapa.get(c.id) || 0,
+    }));
     if (SITE.votoBranco)
-      itens.push({ id: "branco", nome: "Votos em branco", votos: porChapa.get("branco") || 0 });
+      itens.push({
+        id: "branco",
+        nome: "Votos em branco",
+        votos: porChapa.get("branco") || 0,
+      });
     return itens;
   }
-
-  
 
   async function noticias() {
     try {
@@ -201,7 +171,9 @@
         data: String(n.data || n.created).slice(0, 10),
       }));
     } catch (err) {
-      throw new Error(mensagemDeErro(err, "Não foi possível carregar as notícias."));
+      throw new Error(
+        mensagemDeErro(err, "Não foi possível carregar as notícias."),
+      );
     }
   }
 
@@ -216,19 +188,20 @@
         ...(u ? { user: u.id } : {}),
       });
     } catch (err) {
-      throw new Error(mensagemDeErro(err, "Não foi possível enviar a mensagem. Tente novamente."));
+      throw new Error(
+        mensagemDeErro(
+          err,
+          "Não foi possível enviar a mensagem. Tente novamente.",
+        ),
+      );
     }
   }
 
   window.API = {
     usuario,
     logado: () => Boolean(usuario()),
-    podeCadastrarChapa: () => [ "leader", "admin" ].includes(usuario()?.role),
-    validarEmail,
-    validarSenha,
-    entrar,
-    cadastrar,
-    recuperarSenha,
+    podeCadastrarChapa: () => ["leader", "admin"].includes(usuario()?.role),
+    entrarComGoogle,
     sair,
     chapas,
     criarChapa,

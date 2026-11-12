@@ -354,11 +354,11 @@ h3 {
   padding-bottom: 88px;
   background-color: var(--navy);
   background-image:
-    
+
     linear-gradient(180deg, rgba(0, 4, 53, 0) 55%, var(--navy) 100%),
-    
+
       radial-gradient(ellipse 65% 55% at 50% 40%, rgba(20, 40, 160, 0.16), transparent 70%),
-    
+
       radial-gradient(ellipse 120% 100% at 50% 50%, transparent 55%, rgba(0, 2, 30, 0.45) 100%),
     url("../assets/fundo.webp");
   background-position: center;
@@ -779,24 +779,7 @@ textarea {
   margin: 0 auto 60px;
 }
 
-.login-box input {
-  height: 47px;
-  margin-bottom: 18px;
-  border: 1px solid #c9cbe6;
-  background: var(--navy);
-  color: #fff;
-}
-
-.login-box input::placeholder {
-  color: #9da1c9;
-}
-
-.login-box input:focus {
-  border-color: #fff;
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.18);
-}
-
-.login-box .btn-login {
+.login-box .btn-google {
   width: 100%;
   height: 47px;
   margin-top: 16px;
@@ -815,39 +798,15 @@ textarea {
     opacity var(--fast);
 }
 
-.login-box .btn-login:hover {
+.login-box .btn-google:hover {
   background: #e6e6ff;
   transform: translateY(-1px);
 }
 
-.login-box .btn-login[disabled] {
+.login-box .btn-google[disabled] {
   opacity: 0.6;
   cursor: wait;
   transform: none;
-}
-
-.login-links {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
-  margin-top: 14px;
-  font-size: 0.95rem;
-}
-
-.login-links button {
-  padding: 0;
-  border: 0;
-  background: none;
-  color: #fff;
-  font: inherit;
-  cursor: pointer;
-  opacity: 0.9;
-  transition: opacity var(--fast);
-}
-
-.login-links button:hover {
-  text-decoration: underline;
-  opacity: 1;
 }
 
 .login-msg {
